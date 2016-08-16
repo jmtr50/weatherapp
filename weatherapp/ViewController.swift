@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var currentWeatherLabel: UILabel!
 
+    let weatherService = WeatherService()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -28,7 +30,9 @@ class ViewController: UIViewController {
 
     @IBAction func searchWeather(sender: AnyObject) {
         let city = cityTextField.text
-        print("city: \(city!)")
+        //print("city: \(city!)")
+        weatherService.getWeather(city!)
+        
     }
 
     
