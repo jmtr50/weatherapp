@@ -9,7 +9,14 @@
 import Foundation
 
 class WeatherService{
+    
+    var delegate: WeatherServiceDelegate!
+    
     func getWeather(city:String) -> Void {
         print("get the weather for \(city)")
+        
+        if delegate != nil{
+            delegate?.setWeather()
+        }
     }
 }

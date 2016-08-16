@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, WeatherServiceDelegate{
     
     @IBOutlet weak var cityTextField: UITextField!
     
@@ -20,6 +20,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.weatherService.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -34,9 +35,14 @@ class ViewController: UIViewController {
         weatherService.getWeather(city!)
         
     }
-
     
-    
+    func setWeather() {
+        print("hello from the deleegate siiide")
+        
+    }
+    func error() {
+        
+    }
     
 }
 
