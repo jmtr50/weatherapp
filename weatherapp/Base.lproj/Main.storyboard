@@ -49,6 +49,9 @@
                                 <state key="normal" title="Search">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="searchWeather:" destination="BYZ-38-t0r" eventType="touchUpInside" id="93b-gt-2b0"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="nublado" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pdM-69-v5O">
                                 <rect key="frame" x="87" y="408" width="200" height="21"/>
@@ -60,6 +63,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="cityTextField" destination="k13-Of-6Nh" id="Fh6-dm-pyp"/>
+                        <outlet property="currentWeatherImage" destination="bbv-qq-YFh" id="yhu-Nv-dvN"/>
+                        <outlet property="currentWeatherLabel" destination="pdM-69-v5O" id="dE6-hG-daE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

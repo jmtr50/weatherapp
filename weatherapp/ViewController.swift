@@ -9,6 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    @IBOutlet weak var cityTextField: UITextField!
+    
+    @IBOutlet weak var currentWeatherImage: UIImageView!
+    
+    @IBOutlet weak var currentWeatherLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +26,13 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func searchWeather(sender: AnyObject) {
+        let city = cityTextField.text
+        print("city: \(city!)")
+    }
 
+    
+    
+    
 }
 
