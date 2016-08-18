@@ -9,6 +9,6 @@
 import Foundation
 
 protocol WeatherServiceDelegate {
-    func setWeather()
-    func error()
+    func setWeather(weather:Weather)
+    func error(message:String)
 }
