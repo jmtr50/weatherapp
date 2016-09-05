@@ -7,32 +7,59 @@
 //
 
 import UIKit
+import CoreLocation
 
-class ViewController: UIViewController, WeatherServiceDelegate{
+class ViewController: UIViewController, WeatherServiceDelegate, CLLocationManagerDelegate{
     
-    @IBOutlet weak var cityTextField: UITextField!
-    
-    @IBOutlet weak var currentWeatherImage: UIImageView!
-    
-    @IBOutlet weak var currentWeatherLabel: UILabel!
-    
-    @IBOutlet weak var humidityLabel: UILabel!
-    
-    @IBOutlet weak var tempLabel: UILabel!
-
     let weatherService = WeatherService()
+    let locationManager = CLLocationManager()
+    
+    @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var cityTextField: UITextField!
+    @IBOutlet weak var currentWeatherImage: UIImageView!
+    @IBOutlet weak var currentWeatherLabel: UILabel!
+    @IBOutlet weak var humidityLabel: UILabel!
+    @IBOutlet weak var tempLabel: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.weatherService.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+        self.weatherService.delegate = self
     }
 
+    
+    
+    func locationManager(manager: CLLocationManager ,  didUpdateLocations locations: [CLLocation]) {
+        
+        CLGeocoder().reverseGeocodeLocation(manager.location!) { (placemarks, error) -> Void in
+            if error != nil{
+                print("error")
+            }else{
+                
+                if(placemarks!.count > 0){
+                    let pm = placemarks![0]
+                    self.firstWeather(pm.locality!)
+                    self.locationManager.stopUpdatingLocation()
+                }
+                
+            }
+        }
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    func firstWeather( city:String ){
+       cityLabel.text = city
+        weatherService.getWeather(city)
+    }
     @IBAction func searchWeather(sender: AnyObject) {
         let city = cityTextField.text
         weatherService.getWeather(city!)
