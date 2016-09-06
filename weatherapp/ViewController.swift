@@ -9,11 +9,21 @@
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController, WeatherServiceDelegate, CLLocationManagerDelegate{
+class ViewController: UIViewController,UITableViewDelegate, UISearchBarDelegate,
+    UISearchDisplayDelegate,WeatherServiceDelegate, CLLocationManagerDelegate,
+UITableViewDataSource{
+    
+    
     
     let weatherService = WeatherService()
     let locationManager = CLLocationManager()
+    var cities = [String]()
+    var citiesResult = [String]()
+    var shouldShowResults = false
     
+    
+    
+    @IBOutlet weak var cityTableView: UITableView!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var cityTextField: UITextField!
     @IBOutlet weak var currentWeatherImage: UIImageView!
@@ -25,11 +35,13 @@ class ViewController: UIViewController, WeatherServiceDelegate, CLLocationManage
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        self.weatherService.delegate = self
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-        self.weatherService.delegate = self
+        cities = ["Madrid","San Francisco","London","New York","Paris","Bogota","Barcelona"]
+        self.cityTableView.reloadData()
     }
 
     
@@ -86,5 +98,47 @@ class ViewController: UIViewController, WeatherServiceDelegate, CLLocationManage
          currentWeatherLabel.text = "???????"
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if(shouldShowResults){
+            return self.citiesResult.count
+        }else{
+            return self.cities.count
+        }
+    }
+    
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)->UITableViewCell {
+        let cityCell = self.cityTableView.dequeueReusableCellWithIdentifier("cityCell",forIndexPath: indexPath)as UITableViewCell
+        if(shouldShowResults){
+            cityCell.textLabel!.text = citiesResult[indexPath.row]
+        }else{
+            cityCell.textLabel!.text = cities[indexPath.row]
+        }
+        
+        return cityCell
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        shouldShowResults = true
+        searchBar.endEditing(true)
+        self.cityTableView.reloadData()
+    }
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        citiesResult = cities.filter({(city: String)->Bool in
+            return city.lowercaseString.rangeOfString(searchText.lowercaseString) != nil
+        })
+        
+        if searchText != ""{
+            shouldShowResults = true
+        }else{
+            shouldShowResults = false
+        }
+        self.cityTableView.reloadData()
+    }
 }
 
