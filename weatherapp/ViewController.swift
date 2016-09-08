@@ -25,7 +25,7 @@ UITableViewDataSource{
     
     @IBOutlet weak var cityTableView: UITableView!
     @IBOutlet weak var cityLabel: UILabel!
-    @IBOutlet weak var cityTextField: UITextField!
+
     @IBOutlet weak var currentWeatherImage: UIImageView!
     @IBOutlet weak var currentWeatherLabel: UILabel!
     @IBOutlet weak var humidityLabel: UILabel!
@@ -45,6 +45,43 @@ UITableViewDataSource{
     }
 
     
+    @IBAction func customSerach(sender: AnyObject) {
+        showWeatherAlert()
+    }
+    func showWeatherAlert(){
+        
+        //create alert
+        let alertController = UIAlertController(title: "Weather search", message: "search weather of  cities", preferredStyle: .Alert )
+        
+        //add a textfield
+        alertController.addTextFieldWithConfigurationHandler{(textField:UITextField)-> Void in
+            textField.placeholder = "introduce city name"
+            
+        }
+        
+        //add actions
+        
+        let cancel = UIAlertAction(title: "cancel",style:UIAlertActionStyle.Default, handler: nil)
+        let search = UIAlertAction(title: "search",style:UIAlertActionStyle.Default){ ( action: UIAlertAction)-> Void in
+            
+            if let field = alertController.textFields![0] as UITextField!{
+                //calls the weather
+                self.firstWeather(field.text!)
+                
+            }
+            
+        }
+        
+        alertController.addAction(search)
+        alertController.addAction(cancel)
+        
+        //show alerController
+        self.presentViewController(alertController, animated: true, completion: nil)
+        
+    }
+    
+    
+
     
     func locationManager(manager: CLLocationManager ,  didUpdateLocations locations: [CLLocation]) {
         
@@ -72,11 +109,7 @@ UITableViewDataSource{
        cityLabel.text = city
         weatherService.getWeather(city)
     }
-    @IBAction func searchWeather(sender: AnyObject) {
-        let city = cityTextField.text
-        weatherService.getWeather(city!)
-        
-    }
+
     
     func setWeather(weather:Weather) {
     
